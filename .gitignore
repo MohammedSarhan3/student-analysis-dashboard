@@ -1,0 +1,23 @@
+# Python
+*.py
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Excel files
+*.xlsx
+*.xls
+
+# JSON data files
+*.json
+
+# Temp files
+temp_*.txt
+*.backup
+
+# Mac
+.DS_Store
+
+# Temporary Office files
+~$*

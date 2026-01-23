@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تحليل نتائج الطلاب - العام الدراسي 2025-2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><i class="fas fa-chart-line"></i> تحليل نتائج الطلاب</h1>
+        <p class="subtitle">الفصل الدراسي الأول - العام الدراسي 2025-2026</p>
+      </header>
+
+      <!-- Tabs Navigation -->
+      <div class="tabs">
+        <button class="tab-button active" data-grade="summary">
+          <i class="fas fa-list-alt"></i> الملخص
+        </button>
+        <button class="tab-button" data-grade="third">الصف الثالث</button>
+        <button class="tab-button" data-grade="fourth">الصف الرابع</button>
+        <button class="tab-button" data-grade="fifth">الصف الخامس</button>
+        <button class="tab-button" data-grade="sixth">الصف السادس</button>
+        <button class="tab-button" data-grade="first_prep">
+          الأول الإعدادي
+        </button>
+        <button class="tab-button" data-grade="second_prep">
+          الثاني الإعدادي
+        </button>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>جاري تحميل البيانات...</p>
+      </div>
+
+      <!-- Error Message -->
+      <div id="error" class="error" style="display: none">
+        <p>⚠️ حدث خطأ في تحميل البيانات</p>
+      </div>
+
+      <!-- Tab Contents -->
+      <div id="tabContent" class="tab-content">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
