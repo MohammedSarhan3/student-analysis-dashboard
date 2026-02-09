@@ -413,5 +413,85 @@ function displaySummaryView() {
         </div>
     `;
     
+    // Add detailed tables for each grade
+    grades.forEach(gradeKey => {
+        const gradeData = analysisData[gradeKey];
+        const config = gradeConfig[gradeKey];
+        
+        if (!gradeData || !config || !gradeData.subjects) return;
+        
+        html += `
+            <div class="summary" style="margin-top: 40px;">
+                <h2><i class="fas fa-chart-pie"></i> ${config.name} - التوزيع التفصيلي</h2>
+                <div style="display: flex; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                    <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; flex: 1; min-width: 150px;">
+                        <div style="font-size: 28px; font-weight: bold; color: #3498db;">${gradeData.totalStudents || 0}</div>
+                        <div style="font-size: 14px; color: #7f8c8d;">إجمالي الطلاب</div>
+                    </div>
+                    <div style="background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 8px; flex: 1; min-width: 150px;">
+                        <div style="font-size: 28px; font-weight: bold; color: #27ae60;">${gradeData.totalPresent || 0}</div>
+                        <div style="font-size: 14px; color: #7f8c8d;">الحضور</div>
+                    </div>
+                    <div style="background: rgba(231, 76, 60, 0.1); padding: 15px; border-radius: 8px; flex: 1; min-width: 150px;">
+                        <div style="font-size: 28px; font-weight: bold; color: #e74c3c;">${gradeData.totalAbsent || 0}</div>
+                        <div style="font-size: 14px; color: #7f8c8d;">الغياب</div>
+                    </div>
+                    <div style="background: rgba(155, 89, 182, 0.1); padding: 15px; border-radius: 8px; flex: 1; min-width: 150px;">
+                        <div style="font-size: 28px; font-weight: bold; color: #9b59b6;">${gradeData.averageOverall || 0}%</div>
+                        <div style="font-size: 14px; color: #7f8c8d;">المتوسط العام</div>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-table-container">
+                <table class="summary-table detailed-distribution-table">
+                    <thead>
+                        <tr>
+                            <th style="background: #2c3e50;">المادة</th>
+                            <th style="background: #2c3e50;">عدد الطلاب</th>
+                            <th style="background: #2c3e50;">المتوسط</th>
+                            <th style="background: #e74c3c; color: white;">أقل من 50%</th>
+                            <th style="background: #f39c12; color: white;">من 50% لأقل من 65%</th>
+                            <th style="background: #3498db; color: white;">من 65% لأقل من 85%</th>
+                            <th style="background: #27ae60; color: white;">من 85% إلى 100%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        Object.entries(gradeData.subjects).forEach(([subjectName, subjectData]) => {
+            const dist = subjectData.distribution || {};
+            
+            // Merge distributions: combine 65-75 and 75-85 into one range
+            const below50 = dist.below50Percentage || 0;
+            const from50to65 = dist.from50to65Percentage || 0;
+            const from65to85 = (dist.from65to75Percentage || 0) + (dist.from75to85Percentage || 0);
+            const from85to100 = dist.from85to100Percentage || 0;
+            
+            // Color coding for cells
+            const below50Color = below50 > 0 ? 'background: rgba(231, 76, 60, 0.15);' : '';
+            const from50to65Color = from50to65 > 0 ? 'background: rgba(243, 156, 18, 0.15);' : '';
+            const from65to85Color = from65to85 > 0 ? 'background: rgba(52, 152, 219, 0.15);' : '';
+            const from85to100Color = from85to100 > 0 ? 'background: rgba(39, 174, 96, 0.15);' : '';
+            
+            html += `
+                <tr>
+                    <td style="text-align: right; font-weight: 500;">${subjectName}</td>
+                    <td>${subjectData.studentCount || 0}</td>
+                    <td><span class="badge badge-primary">${(subjectData.averagePercentage || 0).toFixed(1)}%</span></td>
+                    <td style="${below50Color}"><strong style="color: #e74c3c;">${below50.toFixed(1)}%</strong></td>
+                    <td style="${from50to65Color}"><strong style="color: #f39c12;">${from50to65.toFixed(1)}%</strong></td>
+                    <td style="${from65to85Color}"><strong style="color: #3498db;">${from65to85.toFixed(1)}%</strong></td>
+                    <td style="${from85to100Color}"><strong style="color: #27ae60;">${from85to100.toFixed(1)}%</strong></td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+    });
+    
     tabContent.innerHTML = html;
 }
